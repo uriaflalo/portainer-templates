@@ -1,0 +1,10 @@
+{
+  "title": "Nginx",
+  "description": "High performance web server",
+  "logo": "https://cloudinovasi.id/assets/img/logos/nginx.png",
+  "image": "nginx:latest",
+  "ports": [
+    "80/tcp",
+    "443/tcp"
+  ]
+}
