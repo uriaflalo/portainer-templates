@@ -1,0 +1,72 @@
+version: "3"
+services:
+  nga:
+    depends_on:
+    - nga_db
+    - nga_es
+    ports:
+    - ${PORT}:8080
+    - 5701
+    networks:
+      octanet:
+        aliases:
+        - octane1
+    environment:
+      SCHEMA_NAME: 'octane_sa'
+      SCHEMA_PASSWORD: 'tdtdtd'
+      DB_ACTION: 'CREATE_NEW'
+      DB_SERVER_NAME: 'nga_db'
+      DB_SERVER_PORT: '1521'
+      SERVICE_NAME: 'xe'
+      DB_ADMIN_USER: 'system'
+      DB_ADMIN_PASSWORD: 'oracle'
+      TABLE_SPACE: 'USERS'
+      TEMP_TABLE_SPACE: 'TEMP'
+      DB_PROTOCOL: 'jdbc:mercury:oracle'
+      DISABLE_VALIDATOR_MEMORY: 'true'
+      NGA_HEAP_SIZE: '1024'
+      ELASTIC_HOST: 'nga_es'
+      ELASTIC_PORT: '9300'
+      ELASTIC_CLUSTER_NAME: 'elasticsearch'
+      SERVER_DOMAIN: 'hpeswlab.net'
+      MQM_URL: ''
+      SITEADMINISTRATOR_USER: 'sa@nga'
+      ADMIN_PASSWORD: 'Welcome1'
+      REPOSITORY_FOLDER: '/opt/octane/repo'
+      INIT_STRING: 'InitString'
+      AUTH_TOKEN_ENCRYPTION_KEY: 'AuthToken'
+      DISTRIBUTED_UUID: 'DistributedPass'
+      INSTALLATION_FOLDER: '/opt/octane/install'
+      WAR_FOLDER: '/opt/octane/webapps/root'
+      DEBUG: 'true'
+      ENABLE_SERVICES_INTEGRATION: 'true'
+      APP_URL: 'http://${HOSTNAME}:${PORT}'
+    tty: true
+    image: ${IMAGE}
+    stdin_open: true
+  nga_db:
+    networks:
+      octanet:
+        aliases:
+        - nga_db
+    tty: true
+    image: alexeiled/docker-oracle-xe-11g
+    stdin_open: true
+    ports:
+    - 1521
+  nga_es:
+    networks:
+      octanet:
+        aliases:
+        - nga_es
+    environment:
+      ES_HEAP_SIZE: 4G
+    tty: true
+    image: elasticsearch:2.4
+    ports:
+    - 9300
+    - 9200
+    stdin_open: true
+networks:
+  octanet:
+    driver: overlay
