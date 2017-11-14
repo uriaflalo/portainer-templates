@@ -53,7 +53,7 @@ services:
     image: alexeiled/docker-oracle-xe-11g
     stdin_open: true
     ports:
-    - 1521
+    - ${DB_PORT}:1521
   nga_es:
     networks:
       octanet:
